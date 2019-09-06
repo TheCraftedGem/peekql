@@ -17,6 +17,6 @@ defmodule Peekql.Orders.Order do
   def changeset(order, attrs) do
     order
     |> cast(attrs, [:description, :total, :balance_due, :payments_applied])
-    |> validate_required([:description, :total, :balance_due, :payments_applied])
+    |> validate_required([:description, :total, :balance_due])
   end
 end

@@ -7,7 +7,7 @@ defmodule PeekqlWeb.Schema do
   object :payment do
     field :id, non_null(:id)
     field :amount, non_null(:integer)
-    field :note, non_null(:string)
+    field :note, :string
     field :order_id, non_null(:id)
     field :inserted_at
     field :order, :order, resolve: assoc(:order)
@@ -18,13 +18,14 @@ defmodule PeekqlWeb.Schema do
     field :description, non_null(:string)
     field :total, non_null(:integer)
     field :balance_due, non_null(:integer)
-    field :payments_applied, list_of(:payment)
+    field :payments, list_of(:payment)
   end
 
   input_object :order_input_type do
     field :description, non_null(:string)
     field :total, non_null(:integer)
     field :balance_due, non_null(:integer)
+
   end
 
   input_object :payment_input_type do

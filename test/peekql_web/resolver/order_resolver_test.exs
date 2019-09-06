@@ -7,9 +7,9 @@ defmodule Peekql.OrderResolverTest do
     # It's dangerous to go alone, take this!
     # ๏---{:::::::::::::::::>҉
 
-  @order_1 %{description: "some description", total: 10000, balance_due: 500, payments_applied: []}
-  @order_2 %{description: "some description", total: 10000, balance_due: 500, payments_applied: []}
-  @order_3 %{description: "some description", total: 10000, balance_due: 500, payments_applied: []}
+  @order_1 %{description: "some description", total: 10000, balance_due: 500}
+  @order_2 %{description: "some description", total: 10000, balance_due: 500}
+  @order_3 %{description: "some description", total: 10000, balance_due: 500}
 
   describe "Order Resolver" do
 
@@ -76,7 +76,7 @@ defmodule Peekql.OrderResolverTest do
 
       mutation = """
       mutation  {
-        createOrder(input: {description: "something", total: 2000, balance_due: 2000, payments_applied: []}) {
+        createOrder(input: {description: "something", total: 2000, balance_due: 2000}) {
         description
         total
         balance_due
@@ -94,13 +94,15 @@ defmodule Peekql.OrderResolverTest do
         allOrders{
           description
           total
+          payments {
+            amount
+          }
         }
       }
       """
 
       res = context.conn
         |> post("/graphiql", AbsintheHelpers.query_skeleton(query, "allOrders"))
-
       assert List.last(json_response(res, 200)["data"]["allOrders"])["total"]  == 2000
     end
 
@@ -120,15 +122,15 @@ defmodule Peekql.OrderResolverTest do
 
       res = context.conn
         |> post("/graphiql", AbsintheHelpers.mutation_skeleton(mutation))
-        assert json_response(res, 200)["data"]["placePayment"] |> Map.has_key?("amount")  == true
 
-      query = """
+      assert json_response(res, 200)["data"]["placePayment"] |> Map.has_key?("amount")  == true
+
+        query = """
       {
         findOrder(id: #{order_1.id})
         {
-          paymentsApplied
+          payments
             {
-              id
               amount
               note
               order_id
@@ -138,9 +140,9 @@ defmodule Peekql.OrderResolverTest do
       """
 
       res = context.conn
-        |> post("/graphiql", AbsintheHelpers.query_skeleton(query, "allOrders"))
-IEx.pry
-      assert List.last(json_response(res, 200)["data"]["allOrders"])["total"]  == 2000
+        |> post("/graphiql", AbsintheHelpers.query_skeleton(query, "findOrder"))
+
+      assert List.last(json_response(res, 200)["data"]["findOrder"]["payments"])["amount"]  == 100
     end
   end
 end

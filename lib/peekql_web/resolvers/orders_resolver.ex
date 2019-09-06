@@ -17,8 +17,8 @@ defmodule PeekqlWeb.OrdersResolver do
   end
 
   def place_payment(_, %{input: input}, _) do
+    order = Orders.get_order!(input[:order_id])
+    Orders.update_order(order, input)
     Orders.create_payment(input)
-    # order = Orders.update_payment(payment, input  )
-    # {:ok, order}
   end
 end

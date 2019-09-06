@@ -38,8 +38,10 @@ defmodule Peekql.Orders do
       ** (Ecto.NoResultsError)
 
   """
-  def get_order!(id), do: Repo.get!(Order, id)
-
+  def get_order!(id) do
+    Repo.get!(Order, id)
+    |> Repo.preload([:payments])
+  end
   @doc """
   Creates a order.
 
@@ -72,6 +74,7 @@ defmodule Peekql.Orders do
   """
   def update_order(%Order{} = order, attrs) do
     order
+    |> Repo.preload([:payments])
     |> Order.changeset(attrs)
     |> Repo.update()
   end
@@ -150,9 +153,8 @@ defmodule Peekql.Orders do
   """
   def create_payment(attrs \\ %{}) do
     %Payment{}
-    |> Order.changeset(attrs)
+    |> Payment.changeset(attrs)
     |> Repo.insert()
-    IEx.pry
   end
 
   @doc """
