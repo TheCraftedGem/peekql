@@ -6,7 +6,6 @@ defmodule Peekql.Repo.Migrations.CreateOrders do
       add :description, :string
       add :total, :integer
       add :balance_due, :integer
-      add :payments_applied, {:array, :integer}
 
       timestamps()
     end

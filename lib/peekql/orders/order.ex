@@ -6,7 +6,6 @@ defmodule Peekql.Orders.Order do
   schema "orders" do
     field :balance_due, :integer
     field :description, :string
-    field :payments_applied, {:array, :integer}
     field :total, :integer
 
     has_many :payments, Peekql.Orders.Payment
@@ -16,7 +15,7 @@ defmodule Peekql.Orders.Order do
   @doc false
   def changeset(order, attrs) do
     order
-    |> cast(attrs, [:description, :total, :balance_due, :payments_applied])
+    |> cast(attrs, [:description, :total, :balance_due])
     |> validate_required([:description, :total, :balance_due])
   end
 end

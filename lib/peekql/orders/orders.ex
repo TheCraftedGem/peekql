@@ -22,6 +22,7 @@ defmodule Peekql.Orders do
   """
   def list_orders do
     Repo.all(Order)
+    |> Repo.preload([:payments])
   end
 
   @doc """

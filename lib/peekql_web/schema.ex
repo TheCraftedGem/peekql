@@ -55,6 +55,7 @@ defmodule PeekqlWeb.Schema do
       resolve &OrdersResolver.create_order/3
     end
 
+    @desc "Creates Payment For Order"
     field :place_payment, :payment do
       arg(:input, non_null(:payment_input_type))
       resolve &OrdersResolver.place_payment/3
