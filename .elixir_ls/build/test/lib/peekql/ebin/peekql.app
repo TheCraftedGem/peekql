@@ -1,6 +1,7 @@
 {application,peekql,
              [{applications,[kernel,stdlib,elixir,logger,runtime_tools,
-                             gettext,phoenix_pubsub,cowboy,postgrex,phoenix,
+                             gettext,absinthe,phoenix_pubsub,cowboy,postgrex,
+                             absinthe_ecto,phoenix,absinthe_plug,
                              phoenix_ecto]},
               {description,"peekql"},
               {modules,['Elixir.Peekql','Elixir.Peekql.Application',
