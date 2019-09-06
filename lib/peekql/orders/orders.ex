@@ -1,3 +1,6 @@
+require IEx
+
+
 defmodule Peekql.Orders do
   @moduledoc """
   The Orders context.
@@ -147,8 +150,9 @@ defmodule Peekql.Orders do
   """
   def create_payment(attrs \\ %{}) do
     %Payment{}
-    |> Payment.changeset(attrs)
+    |> Order.changeset(attrs)
     |> Repo.insert()
+    IEx.pry
   end
 
   @doc """

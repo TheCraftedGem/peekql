@@ -53,6 +53,25 @@ defmodule Peekql.OrderResolverTest do
       assert Enum.map(json_response(res, 200)["data"]["allOrders"], fn order -> order["description"] end)  == [order_1.description, order_2.description, order_3.description]
     end
 
+    test "returns one order total", context do
+      {:ok, order_1} = Orders.create_order(@order_1)
+      {:ok, order_2} = Orders.create_order(@order_2)
+      {:ok, order_3} = Orders.create_order(@order_3)
+
+
+      query = """
+      {
+        findOrder(id: #{order_1.id}) {
+          total
+        }
+      }
+      """
+
+      res = context.conn
+        |> post("/graphiql", AbsintheHelpers.query_skeleton(query, "findOrder"))
+      assert json_response(res, 200)["data"]["findOrder"]["total"]  == 10000
+    end
+
     test "creates an order", context do
 
       mutation = """
@@ -82,6 +101,45 @@ defmodule Peekql.OrderResolverTest do
       res = context.conn
         |> post("/graphiql", AbsintheHelpers.query_skeleton(query, "allOrders"))
 
+      assert List.last(json_response(res, 200)["data"]["allOrders"])["total"]  == 2000
+    end
+
+    test "place payment on order", context do
+      {:ok, order_1} = Orders.create_order(@order_1)
+      mutation = """
+
+      mutation  {
+        placePayment(input: {order_id: #{order_1.id}, note: "something", amount: 100})
+
+        {
+        note
+        amount
+        }
+      }
+      """
+
+      res = context.conn
+        |> post("/graphiql", AbsintheHelpers.mutation_skeleton(mutation))
+        assert json_response(res, 200)["data"]["placePayment"] |> Map.has_key?("amount")  == true
+
+      query = """
+      {
+        findOrder(id: #{order_1.id})
+        {
+          paymentsApplied
+            {
+              id
+              amount
+              note
+              order_id
+            }
+        }
+      }
+      """
+
+      res = context.conn
+        |> post("/graphiql", AbsintheHelpers.query_skeleton(query, "allOrders"))
+IEx.pry
       assert List.last(json_response(res, 200)["data"]["allOrders"])["total"]  == 2000
     end
   end

@@ -1,8 +1,8 @@
 defmodule Peekql.Orders.Payment do
   use Ecto.Schema
   import Ecto.Changeset
-  import Ecto.Query
-  alias Peekql.Repo
+  # import Ecto.Query
+  # alias Peekql.Repo
 
   schema "payments" do
     field :amount, :integer
@@ -14,14 +14,14 @@ defmodule Peekql.Orders.Payment do
   @doc false
   def changeset(payment, attrs) do
     payment
-    |> cast(attrs, [:amount, :note])
+    |> cast(attrs, [:amount, :note, :order_id])
     |> validate_required([])
   end
 
-  def index do
-    query = from p in Peekql.Orders.Payment,
-              inner_join: o in Peekql.Orders.Order, on: p.order_id == o.id
-    Repo.all(query)
-  end
+  # def index do
+  #   query = from p in Peekql.Orders.Payment,
+  #             inner_join: o in Peekql.Orders.Order, on: p.order_id == o.id
+  #   Repo.all(query)
+  # end
 
 end
