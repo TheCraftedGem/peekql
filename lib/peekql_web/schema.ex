@@ -6,6 +6,7 @@ defmodule PeekqlWeb.Schema do
 
   alias PeekqlWeb.OrdersResolver
 
+  # Move These To A Seperate Module...
   object :payment do
     field :id, non_null(:id)
     field :amount, non_null(:integer)
@@ -35,7 +36,7 @@ defmodule PeekqlWeb.Schema do
     field :note, non_null(:string)
     field :order_id, non_null(:id)
   end
-
+# --------------------------------------
 
   query do
     @desc "Shows All Orders"
@@ -65,6 +66,7 @@ defmodule PeekqlWeb.Schema do
 
   end
 
+  # This took forever to figure out, now that I how it works Im confident I could have done this whole project in 2 hours
   scalar :utc_datetime, name: "utc_dateTime" do
     # We will serialize a datetime to iso8601
     serialize(&NaiveDateTime.to_iso8601/1)

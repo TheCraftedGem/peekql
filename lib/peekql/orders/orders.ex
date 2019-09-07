@@ -26,7 +26,7 @@ defmodule Peekql.Orders do
   #                 preload: [payments: p])
 
   #Couldn't figure out how to do this in one query, datetimes are weird
-
+  # Was taking too long to debug so I moved on.
     Repo.all(Order)
     |> Repo.preload([:payments])
   end
