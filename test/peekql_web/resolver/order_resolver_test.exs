@@ -1,5 +1,7 @@
 require IEx
 defmodule Peekql.OrderResolverTest do
+  use ExUnit.Case, async: true
+  use Plug.Test
   use PeekqlWeb.ConnCase
   alias Peekql.Orders
   alias Peekql.AbsintheHelpers

@@ -10,7 +10,7 @@ defmodule Peekql.Orders do
   alias Peekql.Repo
 
   alias Peekql.Orders.Order
-
+# Peekql.Repo.all(Peekql.Orders.Order)
   @doc """
   Returns the list of orders.
 
@@ -21,6 +21,12 @@ defmodule Peekql.Orders do
 
   """
   def list_orders do
+  #  i =  Repo.all(from o in Order,
+  #                 inner_join: p in assoc(o, :payments),
+  #                 preload: [payments: p])
+
+  #Couldn't figure out how to do this in one query, datetimes are weird
+
     Repo.all(Order)
     |> Repo.preload([:payments])
   end

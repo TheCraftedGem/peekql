@@ -7,7 +7,7 @@ defmodule Peekql.Repo.Migrations.CreatePayments do
       add :note, :text
       add :order_id, references(:orders, on_delete: :nothing)
 
-      timestamps()
+      timestamps(type: :utc_datetime)
     end
     create index(:payments, [:order_id])
   end
